@@ -1,0 +1,148 @@
+Name:		cakephp-mysql-example
+Namespace:	openshift
+Created:	6 months ago
+Labels:		samples.operator.openshift.io/managed=true
+Description:	An example CakePHP application with a MySQL database. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/cakephp-ex/blob/master/README.md.
+		
+		WARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.
+Annotations:	iconClass=icon-php
+		openshift.io/display-name=CakePHP + MySQL (Ephemeral)
+		openshift.io/documentation-url=https://github.com/sclorg/cakephp-ex
+		openshift.io/long-description=This template defines resources needed to develop a CakePHP application, including a build configuration, application deployment configuration, and database deployment configuration.  The database is stored in non-persistent storage, so this configuration should be used for experimental purposes only.
+		openshift.io/provider-display-name=Red Hat, Inc.
+		openshift.io/support-url=https://access.redhat.com
+		samples.operator.openshift.io/version=4.5.2
+		tags=quickstart,php,cakephp
+		template.openshift.io/bindable=false
+
+Parameters:		 
+    Name:		NAME
+    Display Name:	Name
+    Description:	The name assigned to all of the frontend objects defined in this template.
+    Required:		true
+    Value:		cakephp-mysql-example
+
+    Name:		NAMESPACE
+    Display Name:	Namespace
+    Description:	The OpenShift Namespace where the ImageStream resides.
+    Required:		true
+    Value:		openshift
+
+    Name:		PHP_VERSION
+    Display Name:	PHP Version
+    Description:	Version of PHP image to be used (7.3 or latest).
+    Required:		true
+    Value:		7.3
+
+    Name:		MEMORY_LIMIT
+    Display Name:	Memory Limit
+    Description:	Maximum amount of memory the CakePHP container can use.
+    Required:		true
+    Value:		512Mi
+
+    Name:		MEMORY_MYSQL_LIMIT
+    Display Name:	Memory Limit (MySQL)
+    Description:	Maximum amount of memory the MySQL container can use.
+    Required:		true
+    Value:		512Mi
+
+    Name:		SOURCE_REPOSITORY_URL
+    Display Name:	Git Repository URL
+    Description:	The URL of the repository with your application source code.
+    Required:		true
+    Value:		https://github.com/sclorg/cakephp-ex.git
+
+    Name:		SOURCE_REPOSITORY_REF
+    Display Name:	Git Reference
+    Description:	Set this to a branch name, tag or other ref of your repository if you are not using the default branch.
+    Required:		false
+    Value:		<none>
+
+    Name:		CONTEXT_DIR
+    Display Name:	Context Directory
+    Description:	Set this to the relative path to your project if it is not in the root of your repository.
+    Required:		false
+    Value:		<none>
+
+    Name:		APPLICATION_DOMAIN
+    Display Name:	Application Hostname
+    Description:	The exposed hostname that will route to the CakePHP service, if left blank a value will be defaulted.
+    Required:		false
+    Value:		<none>
+
+    Name:		GITHUB_WEBHOOK_SECRET
+    Display Name:	GitHub Webhook Secret
+    Description:	Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.
+    Required:		false
+    Generated:		expression
+    From:		[a-zA-Z0-9]{40}
+
+    Name:		DATABASE_SERVICE_NAME
+    Display Name:	Database Service Name
+    Required:		true
+    Value:		mysql
+
+    Name:		DATABASE_ENGINE
+    Display Name:	Database Engine
+    Description:	Database engine: postgresql, mysql or sqlite (default).
+    Required:		true
+    Value:		mysql
+
+    Name:		DATABASE_NAME
+    Display Name:	Database Name
+    Required:		true
+    Value:		default
+
+    Name:		DATABASE_USER
+    Display Name:	Database User
+    Required:		true
+    Value:		cakephp
+
+    Name:		DATABASE_PASSWORD
+    Display Name:	Database Password
+    Required:		false
+    Generated:		expression
+    From:		[a-zA-Z0-9]{16}
+
+    Name:		CAKEPHP_SECRET_TOKEN
+    Display Name:	CakePHP secret token
+    Description:	Set this to a long random string.
+    Required:		false
+    Generated:		expression
+    From:		[\w]{50}
+
+    Name:		CAKEPHP_SECURITY_SALT
+    Display Name:	CakePHP Security Salt
+    Description:	Security salt for session hash.
+    Required:		false
+    Generated:		expression
+    From:		[a-zA-Z0-9]{40}
+
+    Name:		OPCACHE_REVALIDATE_FREQ
+    Display Name:	OPcache Revalidation Frequency
+    Description:	How often to check script timestamps for updates, in seconds. 0 will result in OPcache checking for updates on every request.
+    Required:		false
+    Value:		2
+
+    Name:		COMPOSER_MIRROR
+    Display Name:	Custom Composer Mirror URL
+    Description:	The custom Composer mirror URL
+    Required:		false
+    Value:		<none>
+
+
+Object Labels:	app=cakephp-mysql-example,template=cakephp-mysql-example
+
+Message:	The following service(s) have been created in your project: ${NAME}, ${DATABASE_SERVICE_NAME}.
+		
+		For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/cakephp-ex/blob/master/README.md.
+
+Objects:		 
+    Secret		${NAME}
+    Service		${NAME}
+    Route		${NAME}
+    ImageStream		${NAME}
+    BuildConfig		${NAME}
+    DeploymentConfig	${NAME}
+    Service		${DATABASE_SERVICE_NAME}
+    DeploymentConfig	${DATABASE_SERVICE_NAME}
